@@ -54,6 +54,7 @@ def aggregate_runs(setting_folder):
     Returns:
         A dictionary that contains the aggregated mean and std of all metrices, as well as the meta data.
     """
+
     runs = [run for run in os.listdir(setting_folder) if run.endswith(".json")]
     runs.sort()
     if not runs:

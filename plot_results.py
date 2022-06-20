@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+
+"""
+python plot_results.py --baseline_path=${WORK}/model_snapshots/DeepOBS results/
+"""
+
+
 from __future__ import print_function
-
 import argparse
-
+#
 import deepobs
 
 
@@ -73,25 +79,32 @@ def main(
     # before (without the main function)
     args = argparse.Namespace(**locals())
     # Parse whole baseline folder
-    if args.baseline_path:
+    if False:  # args.baseline_path:
         print("Parsing baseline folder")
-        deepobs.tensorflow.config.set_baseline_dir(args.baseline_path)
-        baseline_parser = deepobs.analyzer.analyze_utils.Analyzer(
-            deepobs.tensorflow.config.get_baseline_dir()
+        # deepobs.tensorflow.config.set_baseline_dir(args.baseline_path)
+        deepobs.config.set_baseline_dir(args.baseline_path)
+        # baseline_parser = deepobs.analyzer.analyze_utils.Analyzer(
+        #     deepobs.tensorflow.config.get_baseline_dir()
+        # )
+        baseline_parser = deepobs.analyzer.shared_utils.SettingAnalyzer(
+            deepobs.config.get_baseline_dir()
         )
     else:
         baseline_parser = None
 
     # Parse path folder
     print("Parsing results folder")
-    folder_parser = deepobs.analyzer.analyze_utils.Analyzer(args.path)
+    ### folder_parser = deepobs.analyzer.analyze_utils.Analyzer(args.path)
+    folder_parser = deepobs.analyzer.shared_utils.SettingAnalyzer(args.path)
 
     if args.get_best_run or args.full:
         deepobs.analyzer.analyze.get_best_run(folder_parser)
     if args.plot_lr_sensitivity or args.full:
-        deepobs.analyzer.analyze.plot_lr_sensitivity(folder_parser, baseline_parser)
+        deepobs.analyzer.analyze.plot_lr_sensitivity(folder_parser,
+                                                     baseline_parser)
     if args.plot_performance or args.full:
-        deepobs.analyzer.analyze.plot_performance(folder_parser, baseline_parser)
+        deepobs.analyzer.analyze.plot_performance(folder_parser,
+                                                  baseline_parser)
     if args.plot_table or args.full:
         deepobs.analyzer.analyze.plot_table(folder_parser, baseline_parser)
 

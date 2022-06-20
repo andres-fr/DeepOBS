@@ -3,8 +3,14 @@
 
 """
 Usage example:
+
+# SGD
 python pt_test_runner.py quadratic_deep --bs 128 --lr 1e-2 \
-    --momentum 0.99 --num_epochs 10
+    --momentum 0.99 --num_epochs 100
+
+
+# Adam
+python pt_test_runner.py quadratic_deep --bs 128 --lr 1e-2 --num_epochs 100
 
 
 
@@ -25,11 +31,15 @@ import deepobs.pytorch as ptobs
 
 
 optimizer_class = torch.optim.SGD  # (model.parameters(), lr=0.01, momentum=0.9)
-# optimizer_class = torch.optim.Adam  # ([var1, var2], lr=0.0001)
-
 hyperparams = {"lr": {"type": float},
                "momentum": {"type": float, "default": 0},
                "nesterov": {"type": bool, "default": False}}
+
+
+
+
+# optimizer_class = torch.optim.Adam  # ([var1, var2], lr=0.0001)
+# hyperparams = {"lr": {"type": float}}
 
 
 runner = ptobs.runners.StandardRunner(optimizer_class, hyperparams)
