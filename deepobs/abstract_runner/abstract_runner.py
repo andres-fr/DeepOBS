@@ -17,7 +17,7 @@ from .abstract_runner_utils import _add_hp_to_argparse, float2str
 class Runner(abc.ABC):
     """Abstract base class for all different runners in DeepOBS.
     Captures everything that is common to both frameworks and every runner type.
-    This includes folder creation amd writing of the output to the folder.
+    This includes folder creation and writing of the output to the folder.
 
     Attributes:
     _optimizer_class: See argument optimizer_class
@@ -203,6 +203,7 @@ class Runner(abc.ABC):
                 os.makedirs(self._run_directory, exist_ok=True)
                 tb_log_dir = self._run_directory
 
+        print(">>> create_testproblem called! (abstract runner.run)")
         tproblem = self.create_testproblem(testproblem, batch_size, l2_reg, random_seed)
 
         output = self.training(

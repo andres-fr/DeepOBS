@@ -184,6 +184,7 @@ class StandardRunner(PTRunner):
 
         opt = self._optimizer_class(tproblem.net.parameters(), **hyperparams)
 
+        print(">>> training was called!", opt)
         # Lists to log train/test loss and accuracy.
         train_losses = []
         valid_losses = []
@@ -209,6 +210,7 @@ class StandardRunner(PTRunner):
 
         for epoch_count in range(num_epochs + 1):
             # Evaluate at beginning of epoch.
+            print(">>> calling eval all...")
             self.evaluate_all(
                 epoch_count,
                 num_epochs,
@@ -228,6 +230,7 @@ class StandardRunner(PTRunner):
             ### Training ###
 
             # set to training mode
+            print(">>> calling train init op...")
             tproblem.train_init_op()
             batch_count = 0
             while True:
