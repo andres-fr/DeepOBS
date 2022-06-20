@@ -203,7 +203,6 @@ class Runner(abc.ABC):
                 os.makedirs(self._run_directory, exist_ok=True)
                 tb_log_dir = self._run_directory
 
-        print(">>> create_testproblem called! (abstract runner.run)")
         tproblem = self.create_testproblem(testproblem, batch_size, l2_reg, random_seed)
 
         output = self.training(
