@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Default options
-DATA_FOLDER=baselines_deepobs
+DATA_FOLDER=${HOME}/model_snapshots/DeepOBS
 
 # Read variables
 for i in "$@"
