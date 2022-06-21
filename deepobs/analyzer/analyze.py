@@ -356,6 +356,8 @@ def plot_hyperparameter_sensitivity_2d(
         optimizer_path
     )
 
+    print('>>>>>', tuning_summary)
+
     param_values1 = np.array([d["params"][param1] for d in tuning_summary])
     param_values2 = np.array([d["params"][param2] for d in tuning_summary])
 

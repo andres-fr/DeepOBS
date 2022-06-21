@@ -4,6 +4,9 @@
 
 """
 python plot_results.py --baseline_path=${WORK}/model_snapshots/DeepOBS results/
+
+python plot_results.py --baseline_path=${WORK}/model_snapshots/DeepOBS \
+     ${WORK}/Crowded-Valley---Results/results_main
 """
 
 
@@ -79,6 +82,90 @@ def main(
     # before (without the main function)
     args = argparse.Namespace(**locals())
     # Parse whole baseline folder
+
+
+    from deepobs.analyzer import (
+        check_output,
+        estimate_runtime,
+        get_performance_dictionary,
+        plot_final_metric_vs_tuning_rank,
+        plot_hyperparameter_sensitivity,
+        plot_hyperparameter_sensitivity_2d,
+        plot_optimizer_performance,
+        plot_results_table,
+        plot_testset_performances)
+
+    benchmark_path = '/shared/git-work/Crowded-Valley---Results/results_main/medium_budget/none'
+    problem_path = '/shared/git-work/Crowded-Valley---Results/results_main/medium_budget/none/cifar10_3c3d'
+    adam_path = '/shared/git-work/Crowded-Valley---Results/results_main/medium_budget/none/cifar10_3c3d/AdamOptimizer'
+
+
+
+    import pdb; pdb.set_trace()
+
+
+    check_output(path)
+    # estimate_runtime(
+    #     framework, runner_cls, optimizer_cls,
+    #     optimizer_hp, optimizer_hyperparams,
+    #     n_runs=5, sgd_lr=0.01, testproblem="mnist_mlp",
+    #     num_epochs=5, batch_size=128)
+
+    get_performance_dictionary(adam_path, mode="most", metric="valid_accuracies", conv_perf_file=None)
+
+    plot_final_metric_vs_tuning_rank(adam_path, metric="valid_accuracies", show=True)
+
+    plot_hyperparameter_sensitivity_2d(
+        adam_path,
+        ("learning_rate", "beta1"),
+        mode="final",
+        metric="valid_accuracies",
+        xscale="log",
+        yscale="linear",
+        show=True)
+
+    plot_hyperparameter_sensitivity(
+        problem_path,
+        "learning_rate",
+        mode="final",
+        metric="valid_accuracies",
+        xscale="log",
+        plot_std=True,
+        reference_path=None,
+        show=True)
+
+
+    plot_optimizer_performance(
+        problem_path,
+        mode="most",
+        metric="valid_accuracies",
+        reference_path=None,
+        show=True,
+        which="mean_and_std")
+
+
+    # this doesn't plot anything, returns a dataframe
+    plot_results_table(
+        benchmark_path, mode="most", metric="valid_accuracies", conv_perf_file=None)
+
+
+    plot_testset_performances(
+        benchmark_path,
+        mode="most",
+        metric="valid_accuracies",
+        reference_path=None,
+        show=True,
+        which="mean_and_std")
+
+
+
+
+
+
+
+
+
+
     if False:  # args.baseline_path:
         print("Parsing baseline folder")
         # deepobs.tensorflow.config.set_baseline_dir(args.baseline_path)
