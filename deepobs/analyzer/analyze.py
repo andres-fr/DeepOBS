@@ -127,7 +127,6 @@ def estimate_runtime(
     Returns:
         str: The output that is printed to the console.
     """
-
     # get the standard runner with SGD
     if framework == "pytorch":
         from deepobs import pytorch as ptobs
@@ -151,7 +150,6 @@ def estimate_runtime(
 
     sgd_times = []
     new_opt_times = []
-
     for i in range(n_runs):
         print("** Start Run: ", i + 1, "of", n_runs)
 
@@ -159,6 +157,8 @@ def estimate_runtime(
         print("Running SGD")
         start_sgd = time.time()
         runner = runner_sgd(optimizer_class_sgd, hp_sgd)
+
+
         runner.run(
             testproblem=testproblem,
             hyperparams=hyperparams_sgd,
@@ -176,6 +176,7 @@ def estimate_runtime(
         runner = runner_cls(optimizer_cls, optimizer_hp)
         print("Running...", optimizer_cls.__name__)
         start_script = time.time()
+
         runner.run(
             testproblem=testproblem,
             hyperparams=optimizer_hyperparams,

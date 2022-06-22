@@ -93,6 +93,8 @@ def main(
 
 
     import os
+    from unittest.mock import patch
+    import torch
     from deepobs.analyzer import (
         check_output,
         estimate_runtime,
@@ -117,16 +119,23 @@ def main(
 
     # check_output(benchmark_path)
 
+
+    with patch("sys.argv", [__file__]):
+        asdf = estimate_runtime(
+            "pytorch", deepobs.pytorch.runners.StandardRunner, torch.optim.SGD,
+            optimizer_hp={"lr": {"type": float},
+                          "momentum": {"type": float, "default": 0},
+                          "nesterov": {"type": bool, "default": False}},
+            optimizer_hyperparams={"lr": 0.001},
+            n_runs=5, sgd_lr=0.01, testproblem="mnist_mlp",
+            num_epochs=5, batch_size=128)
+
+
     import pdb; pdb.set_trace()
 
-    # estimate_runtime(
-    #     framework, runner_cls, optimizer_cls,
-    #     optimizer_hp, optimizer_hyperparams,
-    #     n_runs=5, sgd_lr=0.01, testproblem="mnist_mlp",
-    #     num_epochs=5, batch_size=128)
 
     perf_dict = get_performance_dictionary(
-        adam_path, mode="best", metric="valid_accuracies", conv_perf_file=None)
+        adam_path, mode="best", metric="valid_accuracies", conv_perf_file=conv_perf_path)
 
     fig, ax = plot_final_metric_vs_tuning_rank(
         adam_path, metric="valid_accuracies", show=False)
