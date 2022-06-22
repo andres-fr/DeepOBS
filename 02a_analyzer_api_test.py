@@ -104,13 +104,16 @@ if __name__ == "__main__":
         # render different plots. They can be saved with e.g.
         # fig.savefig(path, dpi=fig.dpi) or displayed with fig.show()
         SHOW_PLOTS = False
-        MODE = "most"  # some plots use "generate_tuning_summary", which doesn't implement the "most" mode
+        # some plots use "generate_tuning_summary", which
+        MODE = "most"  # doesn't implement the "most" mode
         METRIC = "valid_accuracies"
 
         # Monot. descending line plot, where each x-position is a unique
         # hyperparametrization and the y-axis is the accuracy. Note that a
         # hyperpar can have multiple seeds, they will show up on the same
         # vert line, giving an idea of the noise in accuracy due to seed.
+        # When considering a single opt, this can be used to visualize
+        # the best setting in its context
         fig1, ax1 = plot_final_metric_vs_tuning_rank(
             adam_path, metric="valid_accuracies", show=SHOW_PLOTS)
 
@@ -132,8 +135,8 @@ if __name__ == "__main__":
             yscale_loss="log",
             yscale_acc="logit")
 
-        # variant of the above, in which a given opt is compared to another
-        # reference opt
+        # variant of the above, in which a given optimizer is compared to
+        # another reference optimizer
         fig2b, ax2b = plot_optimizer_performance(
             os.path.join(problem_path, "AdamOptimizer"),
             mode=MODE,
@@ -145,45 +148,50 @@ if __name__ == "__main__":
             yscale_loss="log",
             yscale_acc="logit")
 
-        # fig3, ax3 = plot_testset_performances(
-        #     benchmark_path,
-        #     mode=MODE,
-        #     metric=METRIC,
-        #     reference_path=None,
-        #     show=SHOW_PLOTS,
-        #     which="mean_and_std")
+        # This function returns a matrix of plots, with 4 rows representing
+        # the {train, test}*{loss, accuracy} values on the y-axis, and one
+        # column per problem (e.g. quad_deep), and the x-axis representing
+        # training epoch.
+        # Note that the path and ref_path need to contain multiple tasks,
+        # so if you want to use this to compare specific reference optimizers
+        # you need to prepare a "results" folder with only those optimizers.
+        fig3, ax3 = plot_testset_performances(
+            benchmark_path,
+            mode=MODE,
+            metric=METRIC,
+            reference_path=None,
+            show=SHOW_PLOTS,
+            which="mean_and_std")
 
-        # fig4, ax4 = plot_hyperparameter_sensitivity_2d(
-        #     adam_path,
-        #     ("learning_rate", "beta1"),
-        #     mode="final",
-        #     metric=METRIC,
-        #     xscale="log",
-        #     yscale="linear",
-        #     show=SHOW_PLOTS)
+        # Given a specific optimizer+task that has been run on multiple
+        # settings, We can check the "metric" (e.g. valid_acc) as a function
+        # of 2 hyperparameters with this plot. This can be helpful to
+        # identify hyperpar correlations and other compound trends, although
+        # the 1d version may be better to identify dominant hyperpars.
+        fig4, ax4 = plot_hyperparameter_sensitivity_2d(
+            adam_path,
+            ("learning_rate", "beta1"),  # x and y axes.
+            mode="final",
+            metric=METRIC,  # given by color intensity
+            xscale="log",
+            yscale="linear",
+            show=SHOW_PLOTS)
 
-        # fig5, ax5 = plot_hyperparameter_sensitivity(
-        #     problem_path,
-        #     "learning_rate",
-        #     mode="final",
-        #     metric=METRIC,
-        #     xscale="log",
-        #     plot_std=True,
-        #     reference_path=None,
-        #     show=SHOW_PLOTS)
+        # 1D version of the above, where the x axis is the given hyperpar,
+        # and y is the given metric.. Since we have more space, we can show
+        # here multiple optimizers by passing a problem_path instead of an
+        # optimizer_path. This may get crowded though, so the recommended
+        # way is to compare one (or a few) against a reference, as follows:
+        fig5, ax5 = plot_hyperparameter_sensitivity(
+            adam_path,
+            "learning_rate",
+            mode="final",
+            metric=METRIC,
+            xscale="log",
+            plot_std=True,
+            reference_path=os.path.join(problem_path,
+                                        "GradientDescentOptimizer"),
+            show=SHOW_PLOTS)
 
 
     import pdb; pdb.set_trace()
-
-
-"""
-TODO:
-
-* ADD REFERENCE_PATH!!!
-
-* then inspect/document plots, get a good idea of what's in store
-
-* then design end-to-end protocol: from experiment running all the way down to inspecting and explaining plots. It has to be super convenient for SLURM, and parallelized
-
-* At that point, we have a good command of deepOBS and could start with the benchmarks. Maybe check the tuner API first?
-"""
