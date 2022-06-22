@@ -4,15 +4,28 @@
 """
 Usage example:
 
-# SGD
-python pt_test_runner.py quadratic_deep --bs 128 --lr 1e-2 \
-    --momentum 0.99 --num_epochs 100
-
+# SGD 
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-1 \
+    --momentum 0.1 --num_epochs 50 --data_dir=/shared/datasets/DeepOBS &&
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-2 \
+    --momentum 0.1 --num_epochs 50 --data_dir=/shared/datasets/DeepOBS &&
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-3 \
+    --momentum 0.1 --num_epochs 50
 
 # Adam
-python pt_test_runner.py quadratic_deep --bs 128 --lr 1e-2 --num_epochs 100
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-1 --num_epochs 50 &&
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-2 --num_epochs 50 &&
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-3 --num_epochs 50
 
 
+python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-3 --num_epochs 10 --data_dir=data_deepobs/cifar-100
+
+
+Problems:
+quadratic_deep, mnist_vae, fmnist_2c2d, cifar10_3c3d, fmnist_vae,
+cifar100_allcnnc, cifar100_wrn164, cifar100_wrn404, svhn_3c3d,
+svhn_wrn164, tolstoi_char_rnn, mnist_2c2d, mnist_mlp, fmnist_mlp,
+mnist_logreg, fmnist_logreg
 
 Sample result:
 
