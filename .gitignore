@@ -2,6 +2,10 @@
 **/results
 **/data_deepobs
 
+baselines_deepobs
+results
+
+
 ### OSX ###
 *.DS_Store
 .AppleDouble

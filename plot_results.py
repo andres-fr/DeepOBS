@@ -7,6 +7,12 @@ python plot_results.py --baseline_path=${WORK}/model_snapshots/DeepOBS results/
 
 python plot_results.py --baseline_path=${WORK}/model_snapshots/DeepOBS \
      ${WORK}/Crowded-Valley---Results/results_main
+
+
+python plot_results.py --baseline_path=${WORK}/model_snapshots/DeepOBS \
+     ${HOME}/git-work/Crowded-Valley---Results/results_main
+
+
 """
 
 
@@ -84,6 +90,9 @@ def main(
     # Parse whole baseline folder
 
 
+
+
+    import os
     from deepobs.analyzer import (
         check_output,
         estimate_runtime,
@@ -94,45 +103,64 @@ def main(
         plot_optimizer_performance,
         plot_results_table,
         plot_testset_performances)
-
-    benchmark_path = '/shared/git-work/Crowded-Valley---Results/results_main/medium_budget/none'
-    problem_path = '/shared/git-work/Crowded-Valley---Results/results_main/medium_budget/none/cifar10_3c3d'
-    adam_path = '/shared/git-work/Crowded-Valley---Results/results_main/medium_budget/none/cifar10_3c3d/AdamOptimizer'
+    from deepobs.analyzer.shared_utils import create_setting_analyzer_ranking
 
 
+
+    benchmark_path = os.path.join(
+        os.path.expanduser("~"), "git-work", "Crowded-Valley---Results",
+        "results_main", "medium_budget", "none")
+    problem_path = os.path.join(benchmark_path, "cifar10_3c3d")
+    adam_path = os.path.join(problem_path, "AdamOptimizer")
+    conv_perf_path = os.path.join("baselines_deepobs", "convergence_performance.json")
+
+
+    # check_output(benchmark_path)
 
     import pdb; pdb.set_trace()
 
-
-    check_output(path)
     # estimate_runtime(
     #     framework, runner_cls, optimizer_cls,
     #     optimizer_hp, optimizer_hyperparams,
     #     n_runs=5, sgd_lr=0.01, testproblem="mnist_mlp",
     #     num_epochs=5, batch_size=128)
 
-    get_performance_dictionary(adam_path, mode="most", metric="valid_accuracies", conv_perf_file=None)
+    perf_dict = get_performance_dictionary(
+        adam_path, mode="best", metric="valid_accuracies", conv_perf_file=None)
 
-    plot_final_metric_vs_tuning_rank(adam_path, metric="valid_accuracies", show=True)
+    fig, ax = plot_final_metric_vs_tuning_rank(
+        adam_path, metric="valid_accuracies", show=False)
 
-    plot_hyperparameter_sensitivity_2d(
-        adam_path,
-        ("learning_rate", "beta1"),
-        mode="final",
-        metric="valid_accuracies",
-        xscale="log",
-        yscale="linear",
-        show=False)
 
-    plot_hyperparameter_sensitivity(
-        problem_path,
-        "learning_rate",
-        mode="final",
-        metric="valid_accuracies",
-        xscale="log",
-        plot_std=True,
-        reference_path=None,
-        show=False)
+
+
+    # This returns a descending list of
+    setting_analyzer_ranking = create_setting_analyzer_ranking(
+        adam_path, mode="best", metric="valid_accuracies")[0]
+    best_adam = setting_analyzer_ranking[0]
+
+
+
+
+
+    # plot_hyperparameter_sensitivity_2d(
+    #     adam_path,
+    #     ("learning_rate", "beta1"),
+    #     mode="final",
+    #     metric="valid_accuracies",
+    #     xscale="log",
+    #     yscale="linear",
+    #     show=False)
+
+    # plot_hyperparameter_sensitivity(
+    #     problem_path,
+    #     "learning_rate",
+    #     mode="final",
+    #     metric="valid_accuracies",
+    #     xscale="log",
+    #     plot_std=True,
+    #     reference_path=None,
+    #     show=False)
 
 
     plot_optimizer_performance(
@@ -145,7 +173,7 @@ def main(
 
 
     # this doesn't plot anything, returns a dataframe
-    plot_results_table(
+    table = plot_results_table(
         benchmark_path, mode="most", metric="valid_accuracies", conv_perf_file=None)
 
 
@@ -159,7 +187,7 @@ def main(
 
 
 
-
+    import pdb; pdb.set_trace()
 
 
 
