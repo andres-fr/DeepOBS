@@ -462,15 +462,15 @@ def plot_hyperparameter_sensitivity(
         fig, ax = plt.subplots()
     else:
         fig = plt.gcf()
-    pathes = _preprocess_path(path)
-    for optimizer_path in pathes:
+    paths = _preprocess_path(path)
+    for optimizer_path in paths:
         metric = _determine_available_metric(optimizer_path, metric)
         ax = _plot_hyperparameter_sensitivity(
             optimizer_path, hyperparam, ax, mode, metric, plot_std
         )
     if reference_path is not None:
-        pathes = _preprocess_path(reference_path)
-        for reference_optimizer_path in pathes:
+        paths = _preprocess_path(reference_path)
+        for reference_optimizer_path in paths:
             metric = _determine_available_metric(reference_optimizer_path, metric)
             ax = _plot_hyperparameter_sensitivity(
                 reference_optimizer_path, hyperparam, ax, mode, metric, plot_std
@@ -560,6 +560,8 @@ def _plot_optimizer_performance(
     mode="most",
     metric="valid_accuracies",
     which="mean_and_std",
+    yscale_loss="log",
+    yscale_acc="linear",
 ):
     """Plots the training curve of an optimizer.
 
@@ -582,11 +584,12 @@ def _plot_optimizer_performance(
         "test_accuracies",
         "train_accuracies",
     ]
+    yscales = [yscale_loss, yscale_loss, yscale_acc, yscale_acc]
     if ax is None:  # create default axis for all 4 metrices
         fig, ax = plt.subplots(4, 1, sharex="col")
 
-    pathes = _preprocess_path(path)
-    for optimizer_path in pathes:
+    paths = _preprocess_path(path)
+    for optimizer_path in paths:
         setting_analyzer_ranking = create_setting_analyzer_ranking(
             optimizer_path, mode, metric
         )
@@ -609,6 +612,8 @@ def _plot_optimizer_performance(
 
                 ax[idx].plot(center, label=optimizer_name)
                 ax[idx].fill_between(range(len(center)), low, high, alpha=0.3)
+                ax[idx].set_yscale(yscales[idx])
+
 
     _, testproblem = _get_optimizer_name_and_testproblem_from_path(optimizer_path)
     ax[0].set_title(testproblem, fontsize=18)
@@ -624,13 +629,15 @@ def plot_optimizer_performance(
     reference_path=None,
     show=True,
     which="mean_and_std",
+    yscale_loss="log",
+    yscale_acc="linear",
 ):
     """Plots the training curve of optimizers and addionally plots reference results from the ``reference_path``
 
     Args:
         path (str): Path to the optimizer or to a whole testproblem (in this case all optimizers in the testproblem folder are plotted).
         fig (matplotlib.Figure): Figure to plot the training curves in.
-        ax (matplotlib.axes.Axes): The axes to plot the trainig curves for all metrices. Must have 4 subaxes (one for each metric).
+        ax (matplotlib.axes.Axes): The axes to plot the trainig curves for all metrics. Must have 4 subaxes (one for each metric).
         mode (str): The mode by which to decide the best setting.
         metric (str): The metric by which to decide the best setting.
         reference_path (str): Path to the reference optimizer or to a whole testproblem (in this case all optimizers in the testproblem folder are taken as reference).
@@ -642,14 +649,15 @@ def plot_optimizer_performance(
 
         """
 
-    fig, ax = _plot_optimizer_performance(path, fig, ax, mode, metric, which=which)
+    fig, ax = _plot_optimizer_performance(
+        path, fig, ax, mode, metric, which=which,
+        yscale_loss=yscale_loss, yscale_acc=yscale_acc)
     if reference_path is not None:
         fig, ax = _plot_optimizer_performance(
-            reference_path, fig, ax, mode, metric, which=which
-        )
-
-    metrices = ["Test Loss", "Train Loss", "Test Accuracy", "Train Accuracy"]
-    for idx, _metric in enumerate(metrices):
+            reference_path, fig, ax, mode, metric, which=which,
+            yscale_loss=yscale_loss, yscale_acc=yscale_acc)
+    metrics = ["Test Loss", "Train Loss", "Test Accuracy", "Train Accuracy"]
+    for idx, _metric in enumerate(metrics):
         # set y labels
 
         ax[idx].set_ylabel(_metric, fontsize=14)
