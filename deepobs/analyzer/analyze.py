@@ -530,9 +530,9 @@ def get_performance_dictionary(
         optimizer_path, mode, metric
     )
     sett = setting_analyzers_ranking[0]
-
     perf_dict = dict()
-    metric = "test_accuracies" if "test_accuracies" in sett.aggregate else "test_losses"
+    # bug? overrides metric parameter
+    # metric = "test_accuracies" if "test_accuracies" in sett.aggregate else "test_losses"
     if mode == "final":
         perf_dict["Performance"] = sett.get_final_value(metric)
     elif mode == "best":
@@ -550,6 +550,9 @@ def get_performance_dictionary(
 
     perf_dict["Hyperparameters"] = sett.aggregate["optimizer_hyperparams"]
     perf_dict["Training Parameters"] = sett.aggregate["training_params"]
+    sett.get_final_value("train_accuracies")
+    perf_dict["Performance"]
+
     return perf_dict
 
 
