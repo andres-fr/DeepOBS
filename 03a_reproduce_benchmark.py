@@ -237,6 +237,7 @@ c10_best_params = {"lr": 0.0005853980163494224,
 
 if __name__ == "__main__":
 
+
     # elements common to both runs
     optimizer_class = torch.optim.Adam  # ([var1, var2], lr=0.0001)
     hyperparams = {"lr": {"type": float},
@@ -244,20 +245,6 @@ if __name__ == "__main__":
                    "eps": {"type": float}}
     runner = ptobs.runners.LearningRateScheduleRunner(
         optimizer_class, hyperparams)
-
-    # run the CIFAR100 best setting with some random seed
-    runner.run(
-        testproblem="cifar100_allcnnc",
-        hyperparams=c100_best_params,
-        batch_size=C100_BATCH_SIZE,
-        num_epochs=C100_EPOCHS,
-        train_log_interval=10,
-        lr_sched_epochs=C100_BEST["Training Parameters"]["lr_sched_epochs"],
-        lr_sched_factors=C100_BEST["Training Parameters"]["lr_sched_factors"],
-        # print_train_iter=True,
-        # tb_log=True,
-        # tb_log_dir="quack",
-        skip_if_exists=False)
 
     # run the CIFAR10 best setting with some random seed
     runner.run(
@@ -268,6 +255,20 @@ if __name__ == "__main__":
         train_log_interval=10,
         lr_sched_epochs=C10_BEST["Training Parameters"]["lr_sched_epochs"],
         lr_sched_factors=C10_BEST["Training Parameters"]["lr_sched_factors"],
+        # print_train_iter=True,
+        # tb_log=True,
+        # tb_log_dir="quack",
+        skip_if_exists=False)
+
+    # run the CIFAR100 best setting with some random seed
+    runner.run(
+        testproblem="cifar100_allcnnc",
+        hyperparams=c100_best_params,
+        batch_size=C100_BATCH_SIZE,
+        num_epochs=C100_EPOCHS,
+        train_log_interval=10,
+        lr_sched_epochs=C100_BEST["Training Parameters"]["lr_sched_epochs"],
+        lr_sched_factors=C100_BEST["Training Parameters"]["lr_sched_factors"],
         # print_train_iter=True,
         # tb_log=True,
         # tb_log_dir="quack",
