@@ -75,3 +75,5 @@ if __name__ == "__main__":
     print(best_adam_100)
     print("\n\ncifar10_3c3d:")
     print(best_adam_10)
+
+    import pdb; pdb.set_trace()
