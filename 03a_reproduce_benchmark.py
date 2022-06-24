@@ -12,9 +12,23 @@ As usual, output will be generated into the ./results directory.
 
 
 import torch
+import argparse
 #
 from deepobs import pytorch as ptobs
 
+
+# ##############################################################################
+# # ARGPARSE
+# ##############################################################################
+
+# We require an integer seed because otherways 42 is always picked
+argparser = argparse.ArgumentParser(description="Run DeepOBS")
+argparser.add_argument("-s","--seed", required=True, type=int,
+                       help="Specify an integer seed for the DeepOBS runner")
+args = parser.parse_args()
+SEED = args.seed
+
+import pdb; pdb.set_trace()
 
 # ##############################################################################
 # # GLOBALS
