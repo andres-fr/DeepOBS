@@ -25,10 +25,15 @@ from deepobs import pytorch as ptobs
 argparser = argparse.ArgumentParser(description="Run DeepOBS")
 argparser.add_argument("-s","--seed", required=True, type=int,
                        help="Specify an integer seed for the DeepOBS runner")
-args = parser.parse_args()
+args = argparser.parse_args()
 SEED = args.seed
 
-import pdb; pdb.set_trace()
+# super ugly hack because the runner is too smart trying to grab these
+# arguments and throws an error. Please do not add global side effects inside
+# of libraries...
+import sys
+sys.argv = sys.argv[0:1]
+
 
 # ##############################################################################
 # # GLOBALS
@@ -207,6 +212,7 @@ if __name__ == "__main__":
 
     # run the CIFAR10 best setting with some random seed
     runner.run(
+        random_seed=SEED,
         testproblem="cifar10_3c3d",  # cifar100_allcnnc
         hyperparams=c10_best_params,
         batch_size=C10_BATCH_SIZE,
@@ -221,6 +227,7 @@ if __name__ == "__main__":
 
     # run the CIFAR100 best setting with some random seed
     runner.run(
+        random_seed=SEED,
         testproblem="cifar100_allcnnc",
         hyperparams=c100_best_params,
         batch_size=C100_BATCH_SIZE,
