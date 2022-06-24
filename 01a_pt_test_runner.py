@@ -18,9 +18,6 @@ python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-2 --num_epochs 50 &&
 python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-3 --num_epochs 50
 
 
-python pt_test_runner.py cifar100_allcnnc --bs 128 --lr 1e-3 --num_epochs 10 --data_dir=data_deepobs/cifar-100
-
-
 Problems:
 quadratic_deep, mnist_vae, fmnist_2c2d, cifar10_3c3d, fmnist_vae,
 cifar100_allcnnc, cifar100_wrn164, cifar100_wrn404, svhn_3c3d,
@@ -48,12 +45,8 @@ hyperparams = {"lr": {"type": float},
                "momentum": {"type": float, "default": 0},
                "nesterov": {"type": bool, "default": False}}
 
-
-
-
 # optimizer_class = torch.optim.Adam  # ([var1, var2], lr=0.0001)
 # hyperparams = {"lr": {"type": float}}
-
 
 runner = ptobs.runners.StandardRunner(optimizer_class, hyperparams)
 # The run method accepts all the relevant inputs, all arguments that are not
@@ -65,7 +58,4 @@ runner.run(
     # tb_log_dir="quack",
     skip_if_exists=False)
 
-
 # import pdb; pdb.set_trace()
-
-

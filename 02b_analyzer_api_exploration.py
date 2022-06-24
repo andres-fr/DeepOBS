@@ -41,11 +41,9 @@ if __name__ == "__main__":
     conv_perf_path = os.path.join("baselines_deepobs",
                                   "convergence_performance.json")
 
-
     if 0:
         # Sanity check for the OBS results
         check_output(benchmark_path)
-
 
     if 0:
         # Here we emulate a parameterless call because otherwise the runner
@@ -60,7 +58,6 @@ if __name__ == "__main__":
                 n_runs=3, sgd_lr=0.01, testproblem="mnist_mlp",
                 num_epochs=3, batch_size=128)
             print(runtime_analysis)
-
 
     if 0:
         # mode can be:
@@ -83,7 +80,6 @@ if __name__ == "__main__":
         best_setting = create_setting_analyzer_ranking(
             adam_path, mode="best", metric="valid_accuracies")[0]
 
-
     if 0:
         # this doesn't plot anything, returns a dataframe with rows=tasks, and
         # columns=optimizers. For each task+optimizer, the table contains the
@@ -98,7 +94,6 @@ if __name__ == "__main__":
                                "display.width", 300):
             print(table.loc[:, table.columns[0]])
         print(table.columns)
-
 
     if 1:
         # render different plots. They can be saved with e.g.
@@ -192,6 +187,5 @@ if __name__ == "__main__":
             reference_path=os.path.join(problem_path,
                                         "GradientDescentOptimizer"),
             show=SHOW_PLOTS)
-
 
     import pdb; pdb.set_trace()

@@ -24,9 +24,9 @@ if __name__ == "__main__":
     METRIC = "test_accuracies"  # train/valid/test
     # figure global paths
     converg_path = os.path.join("baselines_deepobs",
-                                  "convergence_performance.json")
+                                "convergence_performance.json")
 
-    pather = deepobs.CrowdedValleyPaths(os.path.join(
+    pather = CrowdedValleyPaths(os.path.join(
         os.path.expanduser("~"), "git-work",
         "Crowded-Valley---Results", "results_main"))
 
