@@ -21,7 +21,7 @@ from deepobs.analyzer import plot_final_metric_vs_tuning_rank
 
 if __name__ == "__main__":
 
-    METRIC = "test_accuracies"  # train/valid/test
+    METRIC = "valid_accuracies"  # train/valid/test
     # figure global paths
     converg_path = os.path.join("baselines_deepobs",
                                 "convergence_performance.json")
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # double check that provided Performance isn't noisy, i.e. that the setting
     # with most runs has a good average equal to our "best", and with small
     # stddev. This way we know that our target Perf is good *and* reliable
-    print(f"Best adam 100 performance ({METRIC, best_adam_10['lrsched']}):",
+    print(f"Adam 100 performance ({METRIC, best_adam_10['lrsched']}):",
           best_adam_100["Performance"])
     plot_final_metric_vs_tuning_rank(
         # the path to the best adam we found
@@ -61,7 +61,8 @@ if __name__ == "__main__":
                tasks={"cifar100_allcnnc"}, lrscheds={best_adam_100["lrsched"]},
                abspaths=True)[0], metric=METRIC, show=True)
     #
-    print(f"Best adam 10 performance ({METRIC, best_adam_10['lrsched']}):",
+    print(f"A
+    dam 10 performance ({METRIC, best_adam_10['lrsched']}):",
           best_adam_10["Performance"])
     plot_final_metric_vs_tuning_rank(
         # the path to the best adam we found

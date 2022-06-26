@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
 
     MODE = "most"
-    METRIC = "valid_accuracies"
+    METRIC = "train_accuracies"
     SHOW_PLOTS = True
     #
     results_path = "results"
@@ -50,4 +50,4 @@ if __name__ == "__main__":
     print("Adam on CIFAR100:", adam_c100_perf["Performance"])
     print("Adam on CIFAR10:", adam_c10_perf["Performance"])
 
-    # import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
