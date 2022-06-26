@@ -15,6 +15,7 @@ python 03b_check_03a_results.py
 import os
 #
 from deepobs.analyzer import get_performance_dictionary
+from deepobs.analyzer import plot_final_metric_vs_tuning_rank
 
 
 # ##############################################################################
@@ -26,6 +27,7 @@ if __name__ == "__main__":
 
     MODE = "most"
     METRIC = "valid_accuracies"
+    SHOW_PLOTS = True
     #
     results_path = "results"
     adam_c100_path = os.path.join("results", "cifar100_allcnnc", "Adam")
@@ -37,6 +39,12 @@ if __name__ == "__main__":
         adam_c100_path, mode=MODE, metric=METRIC, conv_perf_file=converg_path)
     adam_c10_perf = get_performance_dictionary(
         adam_c10_path, mode=MODE, metric=METRIC, conv_perf_file=converg_path)
+
+    plot_final_metric_vs_tuning_rank(
+        adam_c100_path, metric=METRIC, show=SHOW_PLOTS)
+    plot_final_metric_vs_tuning_rank(
+        adam_c10_path, metric=METRIC, show=SHOW_PLOTS)
+
 
     print("Final", METRIC)
     print("Adam on CIFAR100:", adam_c100_perf["Performance"])
